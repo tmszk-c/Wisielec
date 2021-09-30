@@ -1,16 +1,51 @@
-# This is a sample Python script.
+import sys
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# Dodaj właściwą walidacje, czy urzytkownik wpisuje tylko jedną literę
+# nie pozwól żeby urzytkownik nie wpisał pora 2 tą samo literę
+# lista sołów do losowania - zewnętrzna biblioteka
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+no_of_tries = 5
+world = "tomasz"
+used_letters = []
+user_word = []
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+def show_state_of_game():
+    print()
+    print(user_word)
+    print('pozostało prób: ', no_of_tries)
+    print('urzyte litery: ', used_letters)
+    print()
+
+def find_indexes(world, letter):
+    indexes = []
+
+    for index, letter_in_word in enumerate(world):
+        if letter == letter_in_word:
+            indexes.append(index)
+
+    return indexes
+
+for _ in world:
+    user_word.append('_')
+
+while True:
+    letter = input('Podaj literę: ')
+    used_letters.append(letter)
+
+    found_indexes = find_indexes(world, letter)
+
+    if len(found_indexes) == 0:
+        print('nie ma takiej litery')
+        no_of_tries -= 1
+        if no_of_tries == 0:
+            print('koniec gry')
+            sys.exit(0)
+    else:
+        for index in found_indexes:
+            user_word[index] = letter
+    if "".join(user_word) == world:
+        print('brawo to jest to słowo')
+        sys.exit(0)
+
+    show_state_of_game()
